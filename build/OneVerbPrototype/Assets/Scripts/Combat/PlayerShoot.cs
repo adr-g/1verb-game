@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerShoot : MonoBehaviour
 {
+    [SerializeField] private TMP_Text ammoText;
     [SerializeField] private PlayerTeleport playerTeleport;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private TurnManager turnManager;
@@ -10,6 +12,17 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private float shootRange = 8f;
     [SerializeField] private float shootActionDistance = 3f;
     [SerializeField] private Material greenMat;
+
+    [SerializeField] private int maxAmmo = 10;
+
+    private int currentAmmo;
+
+    //start ammo é = maxAmmo
+    void Start()
+    {
+        currentAmmo = maxAmmo;
+        UpdateAmmoUI();
+    }
 
     void Update()
     {
@@ -52,9 +65,21 @@ public class PlayerShoot : MonoBehaviour
 
     void PerformAction()
     {
+        //para action quando o player esta sem balas
+        if (currentAmmo <= 0)
+            return;
+
         // Obt�m a a��o atualmente prevista.
         if (!TryGetAction(out GameObject shootTarget, out Vector3 teleportDestination, out float actionDistance))
             return;
+
+        //diminuir ammo a cada shot
+        currentAmmo--;
+
+        //update do count no texto da ammo ui
+        UpdateAmmoUI();
+
+        Debug.Log("Ammo: " + currentAmmo);
 
         Vector3 playerOldPosition = playerTeleport.transform.position;
 
@@ -112,5 +137,21 @@ public class PlayerShoot : MonoBehaviour
 
         // Executa o movimento dos inimigos ap�s a a��o do jogador.
         turnManager.ResolveTurn(actionDistance, playerOldPosition);
+    }
+
+    //ammo pickup
+    public void AddAmmo(int amount)
+    {
+        currentAmmo = Mathf.Min(currentAmmo + amount, maxAmmo);
+
+        UpdateAmmoUI();
+
+        Debug.Log("Ammo: " + currentAmmo);
+    }
+
+    void UpdateAmmoUI()
+    {
+        if (ammoText != null)
+            ammoText.text = "Ammo: " + currentAmmo + "/" + maxAmmo;
     }
 }
