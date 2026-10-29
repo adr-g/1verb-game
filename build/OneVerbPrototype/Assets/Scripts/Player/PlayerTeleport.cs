@@ -5,21 +5,34 @@ public class PlayerTeleport : MonoBehaviour
     [SerializeField] private float teleportRange = 5f;
     [SerializeField] private LayerMask groundLayer;
 
-    public void TryTeleport(RaycastHit hit, Vector3 shotOrigin)
+    public bool TryGetTeleportDestination(RaycastHit hit, Vector3 shotOrigin, out Vector3 destination, out float actionDistance)
     {
-        //verificar se o obj pertence à layer ground (obj atingido)
+        destination = transform.position;
+        actionDistance = 0f;
+
+        // Verifica se o objeto atingido pertence à layer Ground.
         if ((groundLayer.value & (1 << hit.collider.gameObject.layer)) == 0)
-            return;
+            return false;
 
-        //distancia entre origem do disparo e impacto
-        float distance = Vector3.Distance(shotOrigin, hit.point);
+        // Verifica se o destino está dentro do alcance do teleporte.
+        if (Vector3.Distance(shotOrigin, hit.point) > teleportRange)
+            return false;
 
-        if (distance > teleportRange)
-            return;
+        destination = hit.point;
 
-        //tp player hit point
-        transform.position = hit.point;
+        // Calcula a distância horizontal que o jogador vai percorrer.
+        Vector3 movement = destination - transform.position;
+        movement.y = 0f;
+        actionDistance = movement.magnitude;
 
-        Debug.Log("Teleport successfull");
+        return true;
+    }
+
+    public void Teleport(Vector3 destination)
+    {
+        // Move o jogador para o destino já validado.
+        transform.position = destination;
+
+        Debug.Log("Teleport successful");
     }
 }
