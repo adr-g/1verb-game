@@ -12,7 +12,7 @@ public class TurnManager : MonoBehaviour
 
     public Vector3 GetEnemyPrediction(EnemyBehaviour enemy, float actionDistance)
     {
-        // Calcula a posição prevista sem mover o inimigo.
+        // Calcula a posiï¿½ï¿½o prevista sem mover o inimigo.
         return enemy.GetPredictedPosition(player.position, actionDistance);
     }
 
@@ -20,7 +20,7 @@ public class TurnManager : MonoBehaviour
     {
         Vector3[] newPositions = new Vector3[enemies.Length];
 
-        // Calcula todas as posições antes de mover os inimigos.
+        // Calcula todas as posiï¿½ï¿½es antes de mover os inimigos.
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] == null || !enemies[i].gameObject.activeInHierarchy)
@@ -32,7 +32,8 @@ public class TurnManager : MonoBehaviour
         // Move todos os inimigos no mesmo turno.
         for (int i = 0; i < enemies.Length; i++)
         {
-            if (enemies[i] == null || !enemies[i].gameObject.activeInHierarchy)
+            //atualizado para responder ao efeito do player matar, ou seja, desativar o enemy
+            if (enemies[i] == null || !enemies[i].isActiveAndEnabled)
                 continue;
 
             enemies[i].transform.position = newPositions[i];
