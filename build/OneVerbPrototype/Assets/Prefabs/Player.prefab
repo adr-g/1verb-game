@@ -291,12 +291,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9fef04bb24820468077b26a17255c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShoot
+  ammoText: {fileID: 0}
   playerTeleport: {fileID: 7588093184768209689}
   playerCamera: {fileID: 8307360800322652822}
   turnManager: {fileID: 0}
   shootRange: 10
   shootActionDistance: 3
   greenMat: {fileID: 2100000, guid: 91c59ae7b4d9ee743b64cce2029d5ccd, type: 2}
+  maxAmmo: 10
 --- !u!114 &7588093184768209689
 MonoBehaviour:
   m_ObjectHideFlags: 0
