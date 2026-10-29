@@ -29,7 +29,7 @@ public class PlayerShoot : MonoBehaviour
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
-        // Verifica o objeto para onde o jogador está a apontar.
+        // Verifica o objeto para onde o jogador estï¿½ a apontar.
         if (!Physics.Raycast(ray, out RaycastHit hit, shootRange))
             return false;
 
@@ -40,19 +40,19 @@ public class PlayerShoot : MonoBehaviour
 
         if (isEnemy || isButton || isDoor)
         {
-            // Disparar utiliza sempre uma distância de ação fixa.
+            // Disparar utiliza sempre uma distï¿½ncia de aï¿½ï¿½o fixa.
             shootTarget = hit.collider.gameObject;
             actionDistance = shootActionDistance;
             return true;
         }
 
-        // Se não for um alvo de disparo, verifica se o teleporte é válido.
+        // Se nï¿½o for um alvo de disparo, verifica se o teleporte ï¿½ vï¿½lido.
         return playerTeleport.TryGetTeleportDestination(hit, ray.origin, out teleportDestination, out actionDistance);
     }
 
     void PerformAction()
     {
-        // Obtém a ação atualmente prevista.
+        // Obtï¿½m a aï¿½ï¿½o atualmente prevista.
         if (!TryGetAction(out GameObject shootTarget, out Vector3 teleportDestination, out float actionDistance))
             return;
 
@@ -67,21 +67,38 @@ public class PlayerShoot : MonoBehaviour
         {
             EnemyBehaviour enemy = shootTarget.GetComponentInParent<EnemyBehaviour>();
 
-            if (enemy != null)
+            if (enemy != null && enemy.enabled)
             {
+                Renderer rend = enemy.GetComponent<Renderer>();
+                // mudar cor para black
+                if (rend != null)
+                    rend.material.color = Color.black;
+
+                // mudar a scale e posiÃ§Ã£o dos enemy quando o player "mata"
+                enemy.transform.localScale = new Vector3(1.5f, 0.15f, 1.5f);
+                enemy.transform.position += Vector3.down * 0.85f;
+
+                Collider col = enemy.GetComponent<Collider>();
+
+                if (col != null)
+                    col.enabled = false;
+                //dar disabled ao enemy
+                enemy.enabled = false;
+
                 // Regista o disparo contra o inimigo.
                 Debug.Log("Shot enemy: " + enemy.name);
             }
+
             else if (shootTarget.CompareTag("Button_Normal"))
             {
-                // Ativa o botão e altera o seu material.
+                // Ativa o botï¿½o e altera o seu material.
                 shootTarget.tag = "Button_Pressed";
 
                 Renderer buttonRenderer = shootTarget.GetComponent<Renderer>();
                 if (buttonRenderer != null)
                     buttonRenderer.material = greenMat;
 
-                // Desbloqueia a porta associada ao botão.
+                // Desbloqueia a porta associada ao botï¿½o.
                 Door door = shootTarget.GetComponent<Door>();
                 if (door != null)
                     door.Unlock();
@@ -93,7 +110,7 @@ public class PlayerShoot : MonoBehaviour
             }
         }
 
-        // Executa o movimento dos inimigos após a ação do jogador.
+        // Executa o movimento dos inimigos apï¿½s a aï¿½ï¿½o do jogador.
         turnManager.ResolveTurn(actionDistance, playerOldPosition);
     }
 }

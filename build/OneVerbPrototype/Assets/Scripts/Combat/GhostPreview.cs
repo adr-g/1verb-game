@@ -16,7 +16,7 @@ public class GhostPreview : MonoBehaviour
 
     void Start()
     {
-        // Obtém os inimigos registados no TurnManager.
+        // Obtï¿½m os inimigos registados no TurnManager.
         enemies = turnManager.GetEnemies();
 
         // Cria o fantasma do jogador.
@@ -36,14 +36,14 @@ public class GhostPreview : MonoBehaviour
 
     void Update()
     {
-        // Verifica continuamente a ação para onde o jogador aponta.
+        // Verifica continuamente a aï¿½ï¿½o para onde o jogador aponta.
         if (!playerShoot.TryGetAction(out GameObject shootTarget, out Vector3 teleportDestination, out float actionDistance))
         {
             HideGhosts();
             return;
         }
 
-        // O fantasma do jogador só aparece durante a previsão de teleporte.
+        // O fantasma do jogador sï¿½ aparece durante a previsï¿½o de teleporte.
         bool isTeleport = shootTarget == null;
         playerGhost.SetActive(isTeleport);
 
@@ -52,13 +52,14 @@ public class GhostPreview : MonoBehaviour
             playerGhost.transform.position = teleportDestination + Vector3.up * playerGhostHeight;
         }
 
-        // Atualiza a posição prevista de cada inimigo.
+        // Atualiza a posiï¿½ï¿½o prevista de cada inimigo.
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemyGhosts[i] == null)
                 continue;
 
-            bool enemyActive = enemies[i] != null && enemies[i].gameObject.activeInHierarchy;
+            //atualizado para responder ao efeito do player matar, ou seja, desativar o enemy
+            bool enemyActive = enemies[i] != null && enemies[i].isActiveAndEnabled;
             enemyGhosts[i].SetActive(enemyActive);
 
             if (enemyActive)
@@ -70,13 +71,13 @@ public class GhostPreview : MonoBehaviour
 
     GameObject CreateGhost(string ghostName, Vector3 ghostScale, Material ghostMaterial)
     {
-        // Cria uma cápsula para representar a posição futura.
+        // Cria uma cï¿½psula para representar a posiï¿½ï¿½o futura.
         GameObject ghost = GameObject.CreatePrimitive(PrimitiveType.Capsule);
 
         ghost.name = ghostName;
         ghost.transform.localScale = ghostScale;
 
-        // Remove o collider para não interferir com os raycasts.
+        // Remove o collider para nï¿½o interferir com os raycasts.
         Collider ghostCollider = ghost.GetComponent<Collider>();
         ghostCollider.enabled = false;
         Destroy(ghostCollider);
@@ -92,7 +93,7 @@ public class GhostPreview : MonoBehaviour
 
     void HideGhosts()
     {
-        // Esconde os fantasmas quando não existe uma ação válida.
+        // Esconde os fantasmas quando nï¿½o existe uma aï¿½ï¿½o vï¿½lida.
         playerGhost.SetActive(false);
 
         for (int i = 0; i < enemyGhosts.Length; i++)
