@@ -14,7 +14,7 @@ Antes de o jogador começar:
 
 ## Disparo e movimentação
 
-Jogador experimenta os controlos.
+O jogador experimenta os controlos.
 
 4. O que achas que acontece quando disparas?
 5. O que percebeste sobre a forma de te movimentares?
@@ -25,15 +25,15 @@ Jogador experimenta os controlos.
 Sistema de progressão
 
 7. O que achas que o botão faz?
-8. O que mudou ao disparares no botão?
+8. O que mudou ao dispararem no botão?
 9. Percebeste o que precisas de fazer para passar a porta?
 
 ## Munições e coletáveis
 
-Quando o jogador encontrar ammopickup
+Quando o jogador encontrar ammo pickup
 
 10. O que achas que representam estes objetos?
-11. Percebeste o que aconteceu quando apanhas um?
+11. Percebeste o que aconteceu quando apanhaste um?
 
 ## Inimigos e turnos
 
